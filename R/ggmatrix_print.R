@@ -31,9 +31,17 @@ print.ggmatrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   # must be done after gtable, as gtable calls many ggplot2::print.ggplot methods
   ggplot2_set_last_plot(x)
 
+  start <- Sys.time()
   if (is.null(vp)) {
     grid.draw(gtable)
   } else {
+    print(
+      paste(
+        "VP",
+        vp,
+        sep = ";"
+      )
+    )
     if (is.character(vp)) {
       seekViewport(vp)
     } else {
@@ -42,6 +50,15 @@ print.ggmatrix <- function(x, newpage = is.null(vp), vp = NULL, ...) {
     grid.draw(gtable)
     upViewport()
   }
+
+  print(
+    paste(
+      "PRINT TIME",
+      difftime(Sys.time(), start, units = "secs"),
+      sep = " "
+    )
+  )
+
   invisible(data)
 }
 

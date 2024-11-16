@@ -198,6 +198,8 @@ ggmatrix_gtable <- function(
 
 
   # build and insert all plots and axis labels
+  start <- Sys.time()
+
   plot_number <- 0
   for (i in seq_len(pm$nrow)) {
     for (j in seq_len(pm$ncol)) {
@@ -224,7 +226,7 @@ ggmatrix_gtable <- function(
       }
 
       # get the plot's gtable to slice and dice
-      pg <- plot_gtable(p)
+      pg <- plot_gtable(p) # This function call is causing a slowdown when using scattermost over default ggplot
 
       # if the left axis should be added
       if (j == 1 && pm$showYAxisPlotLabels) {
@@ -261,6 +263,14 @@ ggmatrix_gtable <- function(
       )
     }
   }
+
+  print(
+    paste(
+      "GRAPH BUILD TIME",
+      difftime(Sys.time(), start, units = "secs"),
+      sep = " "
+    )
+  )
 
   # make sure the axes have enough room
 
